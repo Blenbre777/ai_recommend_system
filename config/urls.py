@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import recommend_system.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # http://127.0.0.1:8000/recommend_system/recommend_form/ 추첨 폼
+    path("recommend_system/recommend_form/", recommend_system.views.recommend_form),
+
+    # http://127.0.0.1:8000/recommend_system/recommend_proc/ 추천 결과 출력
+    path("recommend_system/recommend_proc/", recommend_system.views.recommend_proc),
 ]
