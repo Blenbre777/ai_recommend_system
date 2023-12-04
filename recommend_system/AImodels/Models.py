@@ -4,7 +4,7 @@ import os
 import numpy as np
 from tensorflow.keras.models import load_model
 
-def pinterest(data):
+def pinterest(memberno,data):
     data = np.array(data.split(','), dtype=int)
     print('-> data: ', data)
 
@@ -46,4 +46,40 @@ def pinterest(data):
     else:
         result = {"index": index, "label": f'가장 인접한 추천: {label}', "per": per}
    
+    # ---------------------------------------------------------------------------
+    # Oracle에 추천 카테고리 번호 등록
+    # cate 테이블: 1번~7번 카테고리가 등록되어 있어야함.
+    # member 테이블: 사용하려면 회원이 등록되어 있어야 테스트 가능
+    # ---------------------------------------------------------------------------
+    import cx_Oracle  # Oracle
+    from sqlalchemy import create_engine  # Pandas -> Oracle
+    
+    # Oracle Connection 연결, kd 계정으로 XE 사용.
+    conn = cx_Oracle.connect('kd/1234@localhost:1521/XE')
+    # conn = cx_Oracle.connect('kd/69017000@3.34.236.207:1521/XE')
+    cursor = conn.cursor() # SQL 실행 객체 생성
+    
+    # 기존의 추천 정보 삭제
+    sql='''
+    DELETE FROM recommend WHERE memberno=:memberno
+    '''
+    cursor.execute(sql, [memberno]) 
+    conn.commit()
+
+    # 새로운 추천 정보 등록
+    sql = '''
+    INSERT INTO recommend(recommendno, memberno, cateno, seq, rdate)
+    VALUES(RECOMMEND_SEQ.nextval, :memberno, :cateno, :seq, sysdate)
+    '''
+    # print(type(memberno)) # str
+    # print(type(index))
+    # index: 0 ~, seq: 1 가지만 추천 
+    # cursor.execute(sql, [memberno, int(index+1), 1]) # np.int32등을 지원하지 않음.
+    cursor.execute(sql, [memberno, 12, 1]) # cateno 가 있어야 함으로 오류가 날 수 있음 이거 주의 
+    conn.commit()
+    
+    cursor.close()
+    conn.close() 
+    # ---------------------------------------------------------------------------
+    
     return result 
