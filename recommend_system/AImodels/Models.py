@@ -4,7 +4,7 @@ import os
 import numpy as np
 from tensorflow.keras.models import load_model
 
-def pinterest(memberno,data):
+def pinterest(guestno,data):
     data = np.array(data.split(','), dtype=int)
     print('-> data: ', data)
 
@@ -55,27 +55,27 @@ def pinterest(memberno,data):
     from sqlalchemy import create_engine  # Pandas -> Oracle
     
     # Oracle Connection 연결, kd 계정으로 XE 사용.
-    conn = cx_Oracle.connect('kd/1234@localhost:1521/XE')
+    conn = cx_Oracle.connect('team9/1234@localhost:1521/XE')
     # conn = cx_Oracle.connect('kd/69017000@3.34.236.207:1521/XE')
     cursor = conn.cursor() # SQL 실행 객체 생성
     
     # 기존의 추천 정보 삭제
     sql='''
-    DELETE FROM recommend WHERE memberno=:memberno
+    DELETE FROM recommend WHERE guestno=:guestno
     '''
-    cursor.execute(sql, [memberno]) 
+    cursor.execute(sql, [guestno]) 
     conn.commit()
 
     # 새로운 추천 정보 등록
     sql = '''
-    INSERT INTO recommend(recommendno, memberno, cateno, seq, rdate)
-    VALUES(RECOMMEND_SEQ.nextval, :memberno, :cateno, :seq, sysdate)
+    INSERT INTO recommend(recommendID, guestno, activecodeno, seq, rdate)
+    VALUES(RECOMMEND_SEQ.nextval, :guestno, :activecodeno, :seq, sysdate)
     '''
-    # print(type(memberno)) # str
+    # print(type(guestno)) # str
     # print(type(index))
     # index: 0 ~, seq: 1 가지만 추천 
-    # cursor.execute(sql, [memberno, int(index+1), 1]) # np.int32등을 지원하지 않음.
-    cursor.execute(sql, [memberno, 12, 1]) # cateno 가 있어야 함으로 오류가 날 수 있음 이거 주의 
+    # cursor.execute(sql, [guestno, int(index+1), 1]) # np.int32등을 지원하지 않음.
+    cursor.execute(sql, [guestno, int(index), 1]) # activecodeno 가 있어야 함으로 오류가 날 수 있음 이거 주의 
     conn.commit()
     
     cursor.close()
