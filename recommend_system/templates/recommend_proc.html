@@ -7,16 +7,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>   
     <style>
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .image-item {
+            margin: 10px;
+            display: flex;
+            align-items: center;
+        }
+
         .img {
-          width: 150px;
-          height: 120px;
+            width: 100%;
+            border-radius: 8px;
+            max-width: 200px;
+            margin-right: 10px;
+        }
+
+        .text-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        h3, p {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <div style="width: 70%; margin: 30px auto; text-align: center;">
         <h2>추천 시스템</h2>
-        <h3>{{recommend_result.label}} 동호회를 추천합니다.</h3>
+        <h3>{{recommend_result.label}} 관련 활동을 추천합니다.</h3>
         <br><br>
         {% if recommend_result.index == 0 %}
             <img src="/static/images/1.jpg" class="img">
@@ -43,13 +71,60 @@
             <img src="/static/images/38.jpg" class="img">
             <img src="/static/images/45.jpg" class="img">
         {% elif recommend_result.index == 3 %}
-            <img src="/static/images/4.jpg" class="img">
-            <img src="/static/images/11.jpg" class="img">
-            <img src="/static/images/18.jpg" class="img">
-            <img src="/static/images/25.jpg" class="img">
-            <img src="/static/images/32.jpg" class="img">
-            <img src="/static/images/39.jpg" class="img">
-            <img src="/static/images/46.jpg" class="img">
+            <div class="image-container">
+                <div class="image-item" onclick="window.location.href='https://www.seoul.go.kr/story/seoulhistory/pc.html'">
+                    <img src="/static/images/4.jpg" class="img">
+                    <div class="text-container">
+                        <h3>서울로 떠나는 역사 여행</h3>
+                        <p>서울 어디까지 가봤니 ?</p>
+                    </div>
+                    
+                </div>
+                <div class="image-item" onclick="window.location.href='https://museum.seoul.go.kr/www/NR_index.do?sso=ok'">
+                    <img src="/static/images/11.jpg" class="img">
+                    <div class="text-container">
+                        <h3>서울 역사 체험</h3>
+                        <p>그때 그 서울 </p>
+                    </div>
+                </div>
+                <div class="image-item" onclick="window.location.href='https://kr.hotels.com/go/south-korea/kr-historic-things-to-do-busan'">
+                    <img src="/static/images/18.jpg" class="img">
+                    <div class="text-container">
+                        <h3>부산의 역사적인 볼거리 베스트 10</h3>
+                        <p>부산의 과거를 엿볼 수 있는 랜드마크</p>
+                    </div>
+                </div>
+                <div class="image-item" onclick="window.location.href='https://m.blog.naver.com/greenjeonnam/221287740531'">
+                    <img src="/static/images/25.jpg" class="img">
+                    <div class="text-container">
+                        <h3>전라도 역사책 덮고 떠나요 ~ </h3>
+                        <p>역사책 덮고 직접 떠나는 남도여행</p>
+                    </div>
+                </div>
+                <div class="image-item" onclick="window.location.href='">
+                    <img src="/static/images/32.jpg" class="img">
+                    <div class="text-container">
+                        <h3>강원도 , 길었던 역경의 길 </h3>
+                        <p>힘들었다 .. 후 .. </p>
+                    </div>
+                </div>
+                <div class="image-item" onclick="window.location.href='https://www.seoul.go.kr/story/seoulhistory/pc.html'">
+                    <img src="/static/images/39.jpg" class="img">
+                    <div class="text-container">
+                        <h3>서울로 떠나는 역사 여행</h3>
+                        <p>서울 어디까지 가봤니 ?</p>
+                    </div>
+                </div>
+                <div class="image-item" onclick="window.location.href='http://localhost:9093/community/read.do?communityID=1&now_page=1&planID=1'">
+                    <img src="/static/images/46.jpg" class="img">
+                    <div class="text-container">
+                        <h3>서울의 밤</h3>
+                        <p>서울에서도 별이 보이나요?</p>
+                    </div>
+                </div>
+        
+            <!-- 다른 이미지들에 대한 동일한 구조를 추가 -->
+            </div>
         {% elif recommend_result.index == 4 %}
             <img src="/static/images/5.jpg" class="img">
             <img src="/static/images/12.jpg" class="img">
@@ -59,7 +134,7 @@
             <img src="/static/images/40.jpg" class="img">
             <img src="/static/images/47.jpg" class="img">
         {% elif recommend_result.index == 5 %}
-            <img src="/static/images/6.jpg" class="img"> <a href="">해당 컨텐츠로 이동</a>
+            <img src="/static/images/6.jpg" class="img" >
             <img src="/static/images/13.jpg" class="img"> 
             <img src="/static/images/20.jpg" class="img"> 
             <img src="/static/images/27.jpg" class="img"> 
@@ -77,6 +152,7 @@
         {% endif %}
         <br><br>
         <button type="button" onclick="location.href='/recommend_system/recommend_form/?guestno={{guestno}}'" class="btn btn-primary btn-sm">관심 분야 수정</button>
+        <button onclick="location.href='http://localhost:9093/index.do'" class="btn btn-primary btn-sm">메인 이동</button>
     </div>
 
 </body>
